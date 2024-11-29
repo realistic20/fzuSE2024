@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>后台管理页面</title>
+    <style>
+        /* 保留原有样式 */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #333;
+            padding: 1rem;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            justify-content: flex-start;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar ul li {
+            margin-right: 1rem;
+        }
+
+        .navbar ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .section {
+            padding: 2rem;
+        }
+
+        /* 新增和修改的样式 */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 5px;
+            width: 400px;
+            max-width: 90%;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .primary-button {
+            background-color: #1890ff;
+            color: white;
+        }
+
+        .secondary-button {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .danger-button {
+            background-color: #ff4d4f;
+            color: white;
+        }
+
+        .user-list table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-list th,
+        .user-list td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .user-list th {
+            background-color: #fafafa;
+            font-weight: bold;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .search-box {
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <ul>
+                <li><a href="#" onclick="showUserManagement()">用户管理</a></li>
+                <!-- <li><a href="#" onclick="showDatabaseManagement()">数据库管理</a></li> -->
+            </ul>
+        </nav>
+
+        <div id="user-management" class="section">
+            <h2>用户管理</h2>
+            <div class="user-management-controls">
+                <div class="search-box">
+                    <input type="text" id="search-user" placeholder="搜索用户...">
+                    <button class="primary-button" onclick="searchUsers()">搜索</button>
+                    <button class="primary-button" onclick="showCreateUserModal()">新建用户</button>
+                </div>
+            </div>
+
+            <div class="user-list">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>用户ID</th>
+                            <th>用户名</th>
+                            <th>邮箱</th>
+                            <th>创建时间</th>
+                            <th>更新时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="user-table-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- <div id="database-management" class="section hidden">
+            <h2>数据库管理</h2>
+            
+        </div> -->
+
+        <!-- 创建用户模态框 -->
+        <div id="create-user-modal" class="modal">
+            <div class="modal-content">
+                <h3>创建新用户</h3>
+                <div class="form-group">
+                    <label for="new-user-email">邮箱</label>
+                    <input type="email" id="new-user-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="new-user-name">用户名</label>
+                    <input type="text" id="new-user-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="new-user-password">密码</label>
+                    <input type="password" id="new-user-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="new-user-password2">确认密码</label>
+                    <input type="password" id="new-user-password2" required>
+                </div>
+                <div class="button-group">
+                    <button class="secondary-button" onclick="closeCreateUserModal()">取消</button>
+                    <button class="primary-button" onclick="createUser()">创建</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 编辑用户模态框 -->
+        <div id="edit-user-modal" class="modal">
+            <div class="modal-content">
+                <h3>编辑用户信息</h3>
+                <input type="hidden" id="edit-user-id">
+                <div class="form-group">
+                    <label for="edit-user-email">邮箱</label>
+                    <input type="email" id="edit-user-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-user-name">用户名</label>
+                    <input type="text" id="edit-user-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-user-password">新密码（选填）</label>
+                    <input type="password" id="edit-user-password">
+                </div>
+                <div class="form-group">
+                    <label for="edit-user-password2">确认新密码</label>
+                    <input type="password" id="edit-user-password2">
+                </div>
+                <div class="button-group">
+                    <button class="secondary-button" onclick="closeEditUserModal()">取消</button>
+                    <button class="primary-button" onclick="updateUser()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let token = '';
+
+        // 管理员登录获取 Token
+        function adminLogin() {
+            const email = 'admin';
+            const password = 'adminPSW';
+            fetch('http://127.0.0.1:7077/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    token = data.token;
+                    if (token) {
+                        console.log('管理员登录成功');
+                        fetchUserList();
+                    } else {
+                        alert('获取Token失败');
+                    }
+                })
+                .catch(error => {
+                    console.error('登录失败:', error);
+                });
+        }
+
+        // 获取用户列表
+        function fetchUserList() {
+            fetch('http://127.0.0.1:7077/admin/user/userlist', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const userTableBody = document.getElementById('user-table-body');
+                    userTableBody.innerHTML = '';
+
+                    if (data && data.users && Array.isArray(data.users)) {
+                        data.users
+                        .filter(user => user.name !== 'admin')
+                        .forEach(user => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                            <td>${user.id}</td>
+                            <td>${user.name}</td>
+                            <td>${user.email}</td>
+                            <td>${user.createdAt}</td>
+                            <td>${user.updatedAt}</td>
+                            <td>
+                                <button class="secondary-button" onclick="showEditUserModal(${user.id}, '${user.email}', '${user.name}')">编辑</button>
+                                <button class="danger-button" onclick="confirmDeleteUser(${user.id})">删除</button>
+                            </td>
+                        `;
+                            userTableBody.appendChild(row);
+                        });
+                    }
+                })
+                .catch(error => console.error('获取用户列表失败:', error));
+        }
+
+        // 显示创建用户模态框
+        function showCreateUserModal() {
+            document.getElementById('create-user-modal').style.display = 'flex';
+        }
+
+        // 关闭创建用户模态框
+        function closeCreateUserModal() {
+            document.getElementById('create-user-modal').style.display = 'none';
+            // 清空表单
+            document.getElementById('new-user-email').value = '';
+            document.getElementById('new-user-name').value = '';
+            document.getElementById('new-user-password').value = '';
+            document.getElementById('new-user-password2').value = '';
+        }
+
+        // 创建用户
+        function createUser() {
+            const email = document.getElementById('new-user-email').value;
+            const name = document.getElementById('new-user-name').value;
+            const password = document.getElementById('new-user-password').value;
+            const password2 = document.getElementById('new-user-password2').value;
+
+            if (password !== password2) {
+                alert('两次输入的密码不匹配');
+                return;
+            }
+
+            fetch('http://127.0.0.1:7077/admin/user/create_user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ email, name, password, password2 })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message === "User created successfully") {
+                        alert('用户创建成功');
+                        closeCreateUserModal();
+                        fetchUserList();
+                    } else {
+                        alert(data.error || '创建用户失败');
+                    }
+                })
+                .catch(error => {
+                    console.error('创建用户失败:', error);
+                    alert('创建用户失败');
+                });
+        }
+
+        // 显示编辑用户模态框
+        function showEditUserModal(id, email, name) {
+            document.getElementById('edit-user-id').value = id;
+            document.getElementById('edit-user-email').value = email;
+            document.getElementById('edit-user-name').value = name;
+            document.getElementById('edit-user-password').value = '';
+            document.getElementById('edit-user-password2').value = '';
+            document.getElementById('edit-user-modal').style.display = 'flex';
+        }
+
+        // 关闭编辑用户模态框
+        function closeEditUserModal() {
+            document.getElementById('edit-user-modal').style.display = 'none';
+        }
+
+        // 更新 showEditUserModal 函数
+        function showEditUserModal(id, email, name) {
+            document.getElementById('edit-user-id').value = id;
+            document.getElementById('edit-user-email').value = email;
+            document.getElementById('edit-user-name').value = name;
+            document.getElementById('edit-user-password').value = '';
+            document.getElementById('edit-user-password2').value = '';
+            document.getElementById('edit-user-modal').style.display = 'flex';
+        }
+
+        // 更新 updateUser 函数
+        function updateUser() {
+            // 获取用户ID和表单数据
+            const id = document.getElementById('edit-user-id').value;
+            const email = document.getElementById('edit-user-email').value.trim();
+            const name = document.getElementById('edit-user-name').value.trim();
+            const password = document.getElementById('edit-user-password').value;
+            const password2 = document.getElementById('edit-user-password2').value;
+
+            // 基本表单验证
+            if (!email || !name) {
+                alert('邮箱和用户名不能为空');
+                return;
+            }
+
+            // 验证邮箱格式
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('请输入有效的邮箱地址');
+                return;
+            }
+
+            // 构建更新数据对象
+            const updateData = {
+                email: email,
+                name: name
+            };
+
+            // 如果输入了密码，添加到更新数据中
+            if (password) {
+                if (password !== password2) {
+                    alert('两次输入的密码不匹配');
+                    return;
+                }
+                updateData.password = password;
+                updateData.password2 = password2;
+            }
+
+            // 发送更新请求
+            fetch(`http://127.0.0.1:7077/admin/user/update_user/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(updateData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                alert('用户信息更新成功');
+                closeEditUserModal();
+                fetchUserList();
+            })
+            .catch(error => {
+                console.error('更新用户信息失败:', error);
+                alert(error.message || '更新用户信息失败，请稍后重试');
+            });
+        }
+
+        // 确认删除用户
+        function confirmDeleteUser(id) {
+            if (confirm('确定要删除该用户吗？此操作不可撤销。')) {
+                deleteUser(id);
+            }
+        }
+
+        // 删除用户
+        function deleteUser(id) {
+            fetch(`http://127.0.0.1:7077/admin/user/delete_user/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message === "User deleted successfully") {
+                        alert('用户删除成功');
+                        fetchUserList();
+                    } else {
+                        alert(data.error || '删除用户失败');
+                    }
+                })
+                .catch(error => {
+                    console.error('删除用户失败:', error);
+                    alert('删除用户失败');
+                });
+        }
+
+        // 搜索用户
+        function searchUsers() {
+            const searchTerm = document.getElementById('search-user').value.toLowerCase();
+            const rows = document.getElementById('user-table-body').getElementsByTagName('tr');
+
+            for (let row of rows) {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            }
+        }
+
+        // 导航函数
+        function showUserManagement() {
+            document.getElementById('user-management').classList.remove('hidden');
+            document.getElementById('database-management').classList.add('hidden');
+        }
+
+        function showDatabaseManagement() {
+            document.getElementById('database-management').classList.remove('hidden');
+            document.getElementById('user-management').classList.add('hidden');
+        }
+
+        // 页面加载完成后自动登录
+        window.onload = adminLogin;
+    </script>
+</body>
+
+</html>

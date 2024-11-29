@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DATA</title>
+    <link rel="stylesheet" href="leader.css">
+    <link rel="stylesheet" href="backgroud.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            list-style: none;
+            text-decoration: none;
+        }
+
+        body {
+            background: #e4e9f5;
+        }
+
+        .content {
+            position: relative;
+            height: auto;
+            min-height: 100vh;
+            padding-top: 100px;
+            padding-bottom: 100px;
+            background: url('2.png') no-repeat center center fixed;
+            background-size: cover;
+            color: #030303;
+            text-shadow: none;
+        }
+
+        a {
+            text-decoration: none;
+            color: #fdfdfd;
+        }
+
+        .container {
+            padding: 20px;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .container1 {
+            padding: 20px;
+            position: absolute;
+            right: 0;
+            top: 0;
+            color: #000000;
+        }
+
+        .file-management-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .file-management-header h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .file-actions button,
+        .file-actions input[type="file"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .file-actions input[type="file"] {
+            display: none;
+        }
+
+        .file-actions label {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .file-list {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(300px, 1fr));
+            column-gap: 100px;
+            /* 列间间距 */
+            row-gap: 60px;
+            /* 行间间距，较小一些 */
+            margin-top: 20px;
+            justify-items: stretch;
+        }
+
+        .file-item {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+
+        .file-item p {
+            margin: 0;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .file-type {
+            font-size: 14px;
+            color: #555;
+            margin-top: 5px;
+        }
+
+        .file-options {
+            margin-top: 10px;
+        }
+
+        .file-options button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            margin-right: 5px;
+            border-radius: 5px;
+        }
+
+        .file-options button.download-btn {
+            background-color: #007bff;
+        }
+
+        .file-options button:hover {
+            opacity: 0.8;
+        }
+
+        /* 弹窗样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100000000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* width: calc(100% - 240px); */
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+
+            /* background-color:transparent; */
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            float: right;
+            cursor: pointer;
+            font-size: 40px;
+            color: red;
+        }
+
+        .table-container {
+            margin-top: 20px;
+            overflow-x: auto;
+            color: #000000;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .success-message {
+            color: green;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 侧边栏容器 -->
+    <div class="shell">
+        <ul class="nav">
+            <li class="active" id="logo">
+                <a href="file.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                    </div>
+                    <div class="text">我的文件</div>
+                </a>
+            </li>
+            <li>
+                <a href="main.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                        <i class="iconfont icon-cangku"></i>
+                    </div>
+                    <div class="text">WELCOME</div>
+                </a>
+            </li>
+            <li>
+                <a href="applicable.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                        <i class="iconfont icon-cangku"></i>
+                    </div>
+                    <div class="text">适用场景</div>
+                </a>
+            </li>
+            <li>
+                <a href="introduction.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                        <i class="iconfont icon-cangku"></i>
+                    </div>
+                    <div class="text">产品介绍</div>
+                </a>
+            </li>
+            <li>
+                <a href="algorithm.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                        <i class="iconfont icon-cangku"></i>
+                    </div>
+                    <div class="text">数据分析</div>
+                </a>
+            </li>
+            <li>
+                <a href="query.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                        <i class="iconfont icon-cangku"></i>
+                    </div>
+                    <div class="text">数据查询</div>
+                </a>
+            </li>
+            <li>
+                <a href="ai.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                        <i class="iconfont icon-cangku"></i>
+                    </div>
+                    <div class="text">AI</div>
+                </a>
+            </li>
+            <li>
+                <a href="#" id="conditionalLink">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                        <i class="iconfont icon-cangku"></i>
+                    </div>
+                    <div class="text">ME</div>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <div class="file-management-header">
+            <div class="container">我的文件</div>
+            <div class="container1">
+                <div class="file-actions">
+                    <label for="file-upload">上传文件</label>
+                    <input type="file" id="file-upload" accept=".xlsx,.xls,.csv" multiple>
+                </div>
+            </div>
+        </div>
+
+        <div id="message" class="message"></div>
+        <div class="file-list" id="file-list"></div>
+    </div>
+
+    <div id="file-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" id="close-modal">&times;</span>
+            <div id="table-container" class="table-container"></div>
+        </div>
+    </div>
+
+    <!-- 弹窗的HTML结构 -->
+    <div id="file-modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" id="close-modal">&times;</span>
+            <div id="table-container" class="table-container">
+                <!-- 表格内容将显示在此处 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        const link = document.getElementById("conditionalLink");
+        let nav = document.querySelectorAll(".nav li");
+        // 添加点击事件监听器
+        link.addEventListener("click", function (event) {
+            event.preventDefault(); // 阻止默认跳转行为
+
+            // 检查 sessionStorage 中是否存在登录 token
+            const token = sessionStorage.getItem("authToken");
+
+            if (token) {
+                // 如果存在 token，则跳转到主页
+                window.location.href = "homepage.html";
+            } else {
+                // 如果不存在 token，则跳转到登录页面
+                window.location.href = "me.html";
+            }
+        });
+        // 当页面加载时，检查登录状态
+        document.addEventListener("DOMContentLoaded", function () {
+            checkLoginStatus();
+        });
+        // 检查用户是否已登录的函数
+        function checkLoginStatus() {
+            const token = sessionStorage.getItem("authToken");
+            if (!token) {
+                // 如果没有 token，则跳转回登录页面
+                window.location.href = "me.html";
+            }
+        }
+
+        function activeLink() {
+            nav.forEach((item) => item.classList.remove("active"));
+            this.classList.add("active");
+        }
+
+        nav.forEach((item) => item.addEventListener("click", activeLink));
+        document.addEventListener("DOMContentLoaded", async () => {
+            await checkLoginStatusAndHandle(); // 登录状态检查完成后再获取文件
+        });
+
+        const API_BASE_URL = 'http://127.0.0.1:7077';
+
+        // 获取JWT token
+        function getAuthToken() {
+            return sessionStorage.getItem('authToken');
+        }
+
+        // 渲染文件列表
+        function renderFileList(files) {
+            const fileList = document.getElementById('file-list');
+            fileList.innerHTML = '';
+
+            files.forEach(file => {
+                const fileItem = createFileItem(file);
+                fileList.appendChild(fileItem);
+            });
+        }
+
+        // 创建文件项
+        function createFileItem(file) {
+            const fileItem = document.createElement('div');
+            fileItem.classList.add('file-item');
+
+            const fileName = document.createElement('p');
+            fileName.textContent = file.filename;
+
+            const fileType = document.createElement('span');
+            fileType.classList.add('file-type');
+            fileType.textContent = getFileType(file.filename);
+
+            const fileOptions = document.createElement('div');
+            fileOptions.classList.add('file-options');
+
+            // 预览按钮
+            const previewBtn = document.createElement('button');
+            previewBtn.textContent = '预览';
+            previewBtn.onclick = () => previewFile(file.fileId);
+
+            // 下载按钮
+            const downloadBtn = document.createElement('button');
+            downloadBtn.textContent = '下载';
+            downloadBtn.classList.add('download-btn');
+            downloadBtn.onclick = () => downloadFile(file.fileId, file.filename);
+
+            // 删除按钮
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = '删除';
+            deleteBtn.classList.add('delete-btn');
+            deleteBtn.onclick = () => deleteFile(file.fileId);
+
+            fileOptions.appendChild(previewBtn);
+            fileOptions.appendChild(downloadBtn);
+            fileOptions.appendChild(deleteBtn);
+
+            fileItem.appendChild(fileName);
+            fileItem.appendChild(fileType);
+            fileItem.appendChild(fileOptions);
+
+            return fileItem;
+        }
+
+        // 获取文件类型
+        function getFileType(filename) {
+            if (filename.endsWith('.csv')) return 'CSV File';
+            if (filename.endsWith('.xls')) return 'Excel File (.xls)';
+            if (filename.endsWith('.xlsx')) return 'Excel File (.xlsx)';
+            return 'Unknown File Type';
+        }
+        // 获取文件列表
+        async function fetchFileList() {
+            const token = getAuthToken();
+                if (!token) {
+                    window.location.href = "me.html";
+                    return ;
+                }
+            try {
+                const response = await fetch(`${API_BASE_URL}/file/get_file_list`, {
+                    headers: {
+                        'Authorization': `Bearer ${getAuthToken()}`
+                    }
+                });
+                if (!response.ok) throw new Error('Failed to fetch file list');
+                const data = await response.json();
+                renderFileList(data.files);
+            } 
+            catch (error) {
+                console.error('Error fetching file list:', error);
+                // alert('获取文件列表失败');
+            }
+        }
+
+        // 预览文件
+        async function previewFile(fileId) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/file/get_file/${fileId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${getAuthToken()}`
+                    }
+                });
+                if (!response.ok) throw new Error('Failed to fetch file');
+
+                const blob = await response.blob();
+                const fileType = response.headers.get('Content-Type');
+
+                showPreviewModal(blob, fileType);
+            } catch (error) {
+                console.error('Error previewing file:', error);
+                alert('预览文件失败');
+            }
+        }
+
+        // 下载文件
+        async function downloadFile(fileId, filename) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/file/get_file/${fileId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${getAuthToken()}`
+                    }
+                });
+                if (!response.ok) throw new Error('Failed to download file');
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error('Error downloading file:', error);
+                alert('下载文件失败');
+            }
+        }
+
+        // 删除文件
+        async function deleteFile(fileId) {
+            if (!confirm('确定要删除这个文件吗？')) return;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/file/delete_file/${fileId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${getAuthToken()}`
+                    }
+                });
+                if (!response.ok) throw new Error('Failed to delete file');
+
+                await fetchFileList(); // 刷新文件列表
+                alert('文件删除成功');
+            } catch (error) {
+                console.error('Error deleting file:', error);
+                alert('删除文件失败');
+            }
+        }
+
+        // 文件上传
+        document.getElementById('file-upload').addEventListener('change', async function (event) {
+            const files = event.target.files;
+            for (let file of files) {
+                const formData = new FormData();
+                formData.append('file', file);
+
+                try {
+                    const response = await fetch(`${API_BASE_URL}/file/upload_file`, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${getAuthToken()}`
+                        },
+                        body: formData
+                    });
+
+                    if (!response.ok) throw new Error('Failed to upload file');
+
+                    await fetchFileList(); // 刷新文件列表
+                } catch (error) {
+                    console.error('Error uploading file:', error);
+                    alert(`上传文件 ${file.name} 失败`);
+                }
+            }
+        });
+
+        // 显示预览模态框
+        function showPreviewModal(blob, fileType) {
+            const modal = document.getElementById('file-modal');
+            const tableContainer = document.getElementById('table-container');
+            tableContainer.innerHTML = '';
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                if (fileType.includes('csv')) {
+                    renderTableFromCSV(e.target.result);
+                } else if (fileType.includes('excel') || fileType.includes('spreadsheetml')) {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheet = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheet];
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                    renderTableFromJSON(jsonData);
+                }
+            };
+
+            if (fileType.includes('csv')) {
+                reader.readAsText(blob);
+            } else {
+                reader.readAsArrayBuffer(blob);
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        // 渲染CSV数据为表格
+        function renderTableFromCSV(csvText) {
+            const tableContainer = document.getElementById('table-container');
+            const rows = csvText.split('\n');
+            const table = document.createElement('table');
+
+            rows.forEach(row => {
+                if (!row.trim()) return;
+                const tr = document.createElement('tr');
+                const cells = row.split(',');
+                cells.forEach(cell => {
+                    const td = document.createElement('td');
+                    td.textContent = cell.trim();
+                    tr.appendChild(td);
+                });
+                table.appendChild(tr);
+            });
+
+            tableContainer.appendChild(table);
+        }
+
+        // 渲染JSON数据为表格
+        function renderTableFromJSON(jsonData) {
+            const tableContainer = document.getElementById('table-container');
+            const table = document.createElement('table');
+
+            jsonData.forEach((row, index) => {
+                const tr = document.createElement('tr');
+                row.forEach(cell => {
+                    const element = document.createElement(index === 0 ? 'th' : 'td');
+                    element.textContent = cell !== undefined ? cell : '';
+                    tr.appendChild(element);
+                });
+                table.appendChild(tr);
+            });
+
+            tableContainer.appendChild(table);
+        }
+
+        // 关闭预览模态框
+        document.getElementById('close-modal').addEventListener('click', function () {
+            document.getElementById('file-modal').style.display = 'none';
+        });
+
+        // 页面加载时检查登录状态并获取文件列表
+        document.addEventListener('DOMContentLoaded', function () {
+            checkLoginStatus();
+            fetchFileList();
+        });
+    </script>
+</body>
+
+</html>

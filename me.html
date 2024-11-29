@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DATA</title>
+    <link rel="stylesheet" href="leader.css">
+    <style>
+        /* 重置一些默认的样式，确保各浏览器表现一致 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            list-style: none;
+            text-decoration: none;
+            transition: .3s;
+        }
+
+        /* 设置 body 的背景颜色和高度 */
+        body {
+            background: #e4e9f5;
+            height: 100vh;
+            display: flex;
+            text-decoration: none;
+        }
+
+        /* 设置主要内容的样式 */
+        .content {
+            position: absolute;
+            left: 84px;
+            /* 设置默认侧边栏的宽度 */
+            width: calc(100% - 84px);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            background-color: #ecf0f3;
+            color: #a0a5a8;
+            transition: left 0.5s, width 0.5s;
+            /* 添加平滑过渡效果 */
+        }
+
+        /* 设置外层容器的样式 */
+        .shell1 {
+            position: relative;
+            width: 1000px;
+            min-width: 1000px;
+            min-height: 600px;
+            height: 600px;
+            padding: 25px;
+            background-color: #ecf0f3;
+            box-shadow: 10px 10px 10px #d1d9e6, -10px -10px 10px #f9f9f9;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        /* 设置响应式，当浏览器窗口变小时进行相应缩放 */
+        @media (max-width: 1200px) {
+            .shell1 {
+                transform: scale(0.7);
+            }
+        }
+
+        @media (max-width: 1000px) {
+            .shell1 {
+                transform: scale(0.6);
+            }
+        }
+
+        @media (max-width: 800px) {
+            .shell1 {
+                transform: scale(0.5);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .shell1 {
+                transform: scale(0.4);
+            }
+        }
+
+        /* 设置两个表单的容器样式 */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            width: 600px;
+            height: 100%;
+            padding: 25px;
+            background-color: #ecf0f3;
+            transition: 1.25s;
+        }
+
+        /* 表单的样式 */
+        .form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 设置图标样式 */
+        .iconfont {
+            margin: 0 5px;
+            border: rgba(0, 0, 0, 0.5) 2px solid;
+            border-radius: 50%;
+            font-size: 25px;
+            padding: 3px;
+            opacity: 0.5;
+            transition: 0.1s;
+        }
+
+        /* 鼠标悬停在图标时的效果 */
+        .iconfont:hover {
+            opacity: 1;
+            transition: 0.15s;
+            cursor: pointer;
+        }
+
+        /* 设置表单输入框的样式 */
+        .form_input {
+            width: 350px;
+            height: 40px;
+            margin: 4px 0;
+            padding-left: 25px;
+            font-size: 13px;
+            letter-spacing: 0.15px;
+            border: none;
+            outline: none;
+            background-color: #ecf0f3;
+            transition: 0.25s ease;
+            border-radius: 8px;
+            box-shadow: inset 2px 2px 4px #d1d9e6, inset -2px -2px 4px #f9f9f9;
+        }
+
+        /* 当输入框获取焦点时的效果 */
+        .form_input:focus {
+            box-shadow: inset 4px 4px 4px #d1d9e6, inset -4px -4px 4px #f9f9f9;
+        }
+
+        /* 密码容器的样式 */
+        .password-container {
+            position: relative;
+            width: 350px;
+        }
+
+        /* 表单标题的样式 */
+        .form_span {
+            margin-top: 30px;
+            margin-bottom: 12px;
+        }
+
+        /* 链接文本的样式 */
+        .form_link {
+            color: #181818;
+            font-size: 15px;
+            margin-top: 25px;
+            border-bottom: 1px solid #a0a5a8;
+            line-height: 2;
+        }
+
+        /* 标题文本的样式 */
+        .title {
+            font-size: 34px;
+            font-weight: 700;
+            line-height: 3;
+            color: #181818;
+            letter-spacing: 10px;
+        }
+
+        /* 描述文本的样式 */
+        .description {
+            font-size: 14px;
+            letter-spacing: 0.25px;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        /* 按钮的样式 */
+        .button {
+            width: 180px;
+            height: 50px;
+            border-radius: 25px;
+            margin-top: 50px;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 1.15px;
+            background-color: #4B70E2;
+            color: #f9f9f9;
+            box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #f9f9f9;
+            border: none;
+            outline: none;
+        }
+
+        /* 切换容器的样式 */
+        .a-container {
+            z-index: 100;
+            left: calc(100% - 600px);
+        }
+
+        /* 注册表单容器样式 */
+        .b-container {
+            left: calc(100% - 600px);
+            z-index: 0;
+        }
+
+        /* 切换控件样式 */
+        .switch {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 400px;
+            padding: 50px;
+            z-index: 200;
+            transition: 1.25s;
+            background-color: #ecf0f3;
+            overflow: hidden;
+            box-shadow: 4px 4px 10px #d1d9e6, -4px -4px 10px #d1d9e6;
+        }
+
+        /* 切换容器中的圆形样式 */
+        .switch_circle {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background-color: #ecf0f3;
+            box-shadow: inset 8px 8px 12px #b8bec7, inset -8px -8px 12px #fff;
+            bottom: -60%;
+            left: -60%;
+            transition: 1.25s;
+        }
+
+        /* 第二个圆形样式 */
+        .switch_circle-t {
+            top: -30%;
+            left: 60%;
+            width: 300px;
+            height: 300px;
+        }
+
+        /* 切换按钮容器的样式 */
+        .switch_container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            position: absolute;
+            width: 400px;
+            padding: 50px 55px;
+            transition: 1.25s;
+        }
+
+        /* 切换按钮的样式 */
+        .switch_button {
+            cursor: pointer;
+        }
+
+        /* 鼠标悬停在按钮上的效果 */
+        .switch_button:hover,
+        .submit:hover {
+            box-shadow: 6px 6px 10px #d1d9e6, -6px -6px 10px #f9f9f9;
+            transform: scale(0.985);
+            transition: 0.25s;
+        }
+
+        /* 点击按钮的效果 */
+        .switch_button:active,
+        .switch_button:focus {
+            box-shadow: 2px 2px 6px #d1d9e6, -2px -2px 6px #f9f9f9;
+            transform: scale(0.97);
+            transition: 0.25s;
+        }
+
+        /* 动画相关类 */
+        .is-txr {
+            left: calc(100% - 400px);
+            transition: 1.25s;
+            transform-origin: left;
+        }
+
+        .is-txl {
+            left: 0;
+            transition: 1.25s;
+            transform-origin: right;
+        }
+
+        .is-z {
+            z-index: 200;
+            transition: 1.25s;
+        }
+
+        .is-hidden {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            transition: 1.25s;
+        }
+
+        .is-gx {
+            animation: is-gx 1.25s;
+        }
+
+        /* 切换动画的关键帧 */
+        @keyframes is-gx {
+
+            0%,
+            10%,
+            100% {
+                width: 400px;
+            }
+
+            30%,
+            50% {
+                width: 500px;
+            }
+        }
+
+        .input-container {
+            position: relative;
+            margin-bottom: 20px; /* 保持输入框之间有一定间距 */
+        }
+
+        .validation-text {
+            font-size: 0.9em;
+            color: red;
+            position: absolute;
+            top: 100%;  /* 将提示文本放在输入框的下方 */
+            left: 0;    /* 对齐左侧 */
+            margin-top: 5px; /* 控制与输入框的距离 */
+            padding-left: 5px; /* 留些空隙，避免与输入框边缘过于紧凑 */
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 侧边栏容器 -->
+    <div class="shell">
+        <!-- 导航列表 -->
+        <ul class="nav">
+            <!-- 激活的导航项 -->
+            <li class="active" id="logo">
+                <a href="me.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                    </div>
+                    <div class="text">ME</div>
+                </a>
+            </li>
+            <!-- 导航列表项 -->
+            <li>
+                <a href="main.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                    </div>
+                    <div class="text">WELCOME</div>
+                </a>
+            </li>
+            <!-- 其他导航项 -->
+            <li>
+                <a href="applicable.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt=""> <!-- 显示头像图片 -->
+                        </div>
+                    </div>
+                    <div class="text">适用场景</div> <!-- 链接的文本部分 -->
+                </a>
+            </li>
+            <li>
+                <a href="introduction.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt=""> <!-- 显示头像图片 -->
+                        </div>
+                    </div>
+                    <div class="text">产品介绍</div> <!-- 链接的文本部分 -->
+                </a>
+            </li>
+            <li>
+                <a href="file.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt=""> <!-- 显示头像图片 -->
+                        </div>
+                    </div>
+                    <div class="text">我的文件</div> <!-- 链接的文本部分 -->
+                </a>
+            </li>
+            <li>
+                <a href="algorithm.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                    </div>
+                    <div class="text">数据分析</div>
+                </a>
+            </li>
+            <li>
+                <a href="query.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                    </div>
+                    <div class="text">数据查询</div>
+                </a>
+            </li>
+            <li>
+                <a href="ai.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                    </div>
+                    <div class="text">AI</div>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 内容区 -->
+    <div class="content">
+        <!-- 登录注册表单的外部容器 -->
+        <div class="shell1">
+            <!-- 登录表单 -->
+            <div class="container a-container" id="a-container">
+                <form action="" method="" class="form" id="a-form">
+                    <h2 class="form_title title">登录账号</h2>
+                    <input type="text" class="form_input" placeholder="Email" id="login-email">
+                    <div class="password-container">
+                        <input type="password" class="form_input" placeholder="Password" id="login-password">
+                    </div>
+                    <button class="form_button button submit">SIGN IN</button>
+                </form>
+            </div>
+
+            <!-- 注册表单 -->
+            <div class="container b-container" id="b-container">
+                <form action="" method="" class="form" id="b-form">
+                    <h2 class="form_title title">创建账号</h2>
+                    <input type="text" class="form_input" placeholder="Name">
+                    <div class="password-container">
+                        <input type="text" class="form_input" placeholder="Email">
+                        <div id="email-validation" style="font-size: 0.9em; margin-top: 5px;left: 0;"></div>
+                    </div>
+                    <div class="password-container">
+                        <input type="password" class="form_input" placeholder="Password" id="signup-password">
+                        <div id="password-strength" style="font-size: 0.9em; margin-top: 5px;"></div>
+                    </div>
+                    <div class="password-container">
+                        <input type="password" class="form_input" placeholder="Confirm Password" id="signup-confirm-password">
+                        <div id="confirm-password-validation" class="validation-text"></div>
+                    </div>
+                    <button class="form_button button submit">SIGN UP</button>
+                </form>
+            </div>
+
+            <!-- 切换注册/登录的控件 -->
+            <div class="switch" id="switch-cnt">
+                <div class="switch_circle"></div>
+                <div class="switch_circle switch_circle-t"></div>
+                <div class="switch_container" id="switch-c1">
+                    <h2 class="switch_title title" style="letter-spacing: 0;">Hello Friend‼</h2>
+                    <p class="switch_description description">去注册一个账号，成为尊贵的用户，让我们踏入奇妙的旅途！</p>
+                    <button class="switch_button button switch-btn">SIGN UP</button>
+                </div>
+
+                <div class="switch_container is-hidden" id="switch-c2">
+                    <h2 class="switch_title title" style="letter-spacing: 0;">Welcome Back‼</h2>
+                    <p class="switch_description description">已经有账号了嘛，去登录账号来进入奇妙世界吧！！！</p>
+                    <button class="switch_button button switch-btn">SIGN IN</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</html>
+<script>
+    // 获取所有的导航列表项
+    let nav = document.querySelectorAll(".nav li");
+
+    // 定义一个函数，用于激活点击的导航项
+    function activeLink() {
+        // 移除所有导航项的激活状态
+        nav.forEach((item) => item.classList.remove("active"));
+        // 给当前点击的导航项添加激活状态
+        this.classList.add("active");
+    }
+
+    // 给每个导航项添加点击事件监听器，点击时执行 activeLink 函数
+    nav.forEach((item) => item.addEventListener("click", activeLink));
+
+    // 切换注册和登录表单的动画元素选择器
+    let switchCtn = document.querySelector("#switch-cnt");
+    let switchC1 = document.querySelector("#switch-c1");
+    let switchC2 = document.querySelector("#switch-c2");
+    let switchCircle = document.querySelectorAll(".switch_circle");
+    let switchBtn = document.querySelectorAll(".switch-btn");
+    let aContainer = document.querySelector("#a-container");
+    let bContainer = document.querySelector("#b-container");
+
+    // 切换注册和登录表单
+    let changeForm = () => {
+        // 修改类名，添加切换动画效果
+        switchCtn.classList.add("is-gx");
+        setTimeout(function () {
+            switchCtn.classList.remove("is-gx");
+        }, 1500);
+        switchCtn.classList.toggle("is-txr");
+        switchCircle[0].classList.toggle("is-txr");
+        switchCircle[1].classList.toggle("is-txr");
+
+        // 切换容器的显示与隐藏
+        switchC1.classList.toggle("is-hidden");
+        switchC2.classList.toggle("is-hidden");
+        aContainer.classList.toggle("is-txl");
+        bContainer.classList.toggle("is-txl");
+        bContainer.classList.toggle("is-z");
+    };
+
+    // 给切换按钮绑定点击事件
+    switchBtn.forEach((btn) => btn.addEventListener("click", changeForm));
+
+    // // 注册表单提交事件的处理
+    // document.querySelector("#b-form").addEventListener("submit", async function (e) {
+    //     e.preventDefault();
+    //     const name = document.querySelector("#b-form input[placeholder='Name']").value;
+    //     const email = document.querySelector("#b-form input[placeholder='Email']").value;
+    //     const password = document.querySelector("#signup-password").value;
+    //     const confirmPassword = document.querySelector("#signup-confirm-password").value;
+
+    //     // 验证密码和确认密码是否一致
+    //     if (password !== confirmPassword) {
+    //         alert("密码和确认密码不一致，请重新输入。");
+    //         return;
+    //     }
+
+    //     try {
+    //         // 使用 Fetch 发送 POST 请求到后端的注册接口
+    //         const response = await fetch("http://127.0.0.1:7077/signup", {
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-Type": "application/json"
+    //             },
+    //             body: JSON.stringify({ name, email, password, password2: confirmPassword })
+    //         });
+
+    //         // 获取后端返回的数据并进行处理
+    //         const data = await response.json();
+    //         if (response.ok) {
+    //             alert("注册成功！");
+    //             // 注册成功后自动切换到登录页面
+    //             changeForm();
+    //         } else {
+    //             alert(data.error ? data.error : "注册失败，请稍后再试。");
+    //         }
+    //     } catch (error) {
+    //         alert("注册请求失败，请检查网络连接。");
+    //     }
+    // });
+    // // 注册表单提交事件的处理
+    // document.querySelector("#b-form").addEventListener("submit", async function (e) {
+    //     e.preventDefault();
+    //     const name = document.querySelector("#b-form input[placeholder='Name']").value;
+    //     const email = document.querySelector("#b-form input[placeholder='Email']").value;
+    //     const password = document.querySelector("#signup-password").value;
+    //     const confirmPassword = document.querySelector("#signup-confirm-password").value;
+
+    //     // 验证邮箱格式
+    //     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    //     if (!emailPattern.test(email)) {
+    //         alert("请输入有效的邮箱地址。");
+    //         return;
+    //     }
+
+    //     // 验证密码和确认密码是否一致
+    //     if (password !== confirmPassword) {
+    //         alert("密码和确认密码不一致，请重新输入。");
+    //         return;
+    //     }
+
+    //     try {
+    //         // 使用 Fetch 发送 POST 请求到后端的注册接口
+    //         const response = await fetch("http://127.0.0.1:7077/signup", {
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-Type": "application/json"
+    //             },
+    //             body: JSON.stringify({ name, email, password, password2: confirmPassword })
+    //         });
+
+    //         // 获取后端返回的数据并进行处理
+    //         const data = await response.json();
+    //         if (response.ok) {
+    //             alert("注册成功！");
+    //             // 注册成功后自动切换到登录页面
+    //             changeForm();
+    //         } else {
+    //             alert(data.error ? data.error : "注册失败，请稍后再试。");
+    //         }
+    //     } catch (error) {
+    //         alert("注册请求失败，请检查网络连接。");
+    //     }
+    // });
+
+    // 实时检测邮箱格式
+    document.querySelector("#b-form input[placeholder='Email']").addEventListener("input", function () {
+        const email = this.value;
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|edu|gov|mil|biz|info|cn)$/;
+
+        // 获取邮箱验证提示文本元素
+        const emailValidationText = document.querySelector("#email-validation");
+        if (!emailPattern.test(email)) {
+            emailValidationText.textContent = "请输入有效的邮箱地址。";
+            emailValidationText.style.color = "red";
+        } else {
+            emailValidationText.textContent = "";
+        }
+    });
+
+    // 密码输入框事件监听
+        document.querySelector("#signup-password").addEventListener("input", function () {
+            const password = this.value;
+            const passwordStrengthText = document.querySelector("#password-strength");
+
+            // 定义密码的验证规则
+            const hasLowercase = /[a-z]/.test(password);
+            const hasUppercase = /[A-Z]/.test(password);
+            const hasDigit = /\d/.test(password);
+            const hasSpecialChar = /[@$!%*?&#]/.test(password);
+            
+            let strengthMessage = "";
+            let strengthColor = "";
+
+            if (password.length < 8) {
+                strengthMessage = "密码太短，至少需要 8 个字符。";
+                strengthColor = "red";
+            } else {
+                // 检测匹配到的条件数量
+                const conditionsMet = [hasLowercase, hasUppercase, hasDigit, hasSpecialChar].filter(Boolean).length;
+
+                switch (conditionsMet) {
+                    case 1:
+                        strengthMessage = "密码强度较弱，请使用大小写字母、数字和特殊字符的组合。";
+                        strengthColor = "red";
+                        break;
+                    case 2:
+                        strengthMessage = "密码强度一般，建议使用更多种类的字符组合。";
+                        strengthColor = "orange";
+                        break;
+                    case 3:
+                        strengthMessage = "密码强度较强，建议添加更多字符以增强安全性。";
+                        strengthColor = "blue";
+                        break;
+                    case 4:
+                        strengthMessage = "密码强度强。";
+                        strengthColor = "green";
+
+                        // 2秒后隐藏提示
+                        setTimeout(() => {
+                            passwordStrengthText.textContent = "";
+                        }, 2000);
+                        break;
+                }
+            }
+
+            // 显示密码强度信息
+            passwordStrengthText.textContent = strengthMessage;
+            passwordStrengthText.style.color = strengthColor;
+        });
+
+
+    // 实时检测确认密码是否匹配
+    document.querySelector("#signup-confirm-password").addEventListener("input", function () {
+        const password = document.querySelector("#signup-password").value;
+        const confirmPassword = this.value;
+        const confirmPasswordText = document.querySelector("#confirm-password-validation");
+
+        if (confirmPassword !== password) {
+            confirmPasswordText.textContent = "密码和确认密码不一致，请重新输入。";
+            confirmPasswordText.style.color = "red";
+        } else {
+            confirmPasswordText.textContent = "";
+        }
+    });
+
+
+    // 注册表单提交处理
+    document.querySelector("#b-form").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const name = document.querySelector("#b-form input[placeholder='Name']").value;
+        const email = document.querySelector("#b-form input[placeholder='Email']").value;
+        const password = document.querySelector("#signup-password").value;
+        const confirmPassword = document.querySelector("#signup-confirm-password").value;
+
+        // 验证邮箱格式
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|edu|gov|mil|biz|info|cn)$/;
+        if (!emailPattern.test(email)) {
+            alert("请输入有效的邮箱地址。");
+            return;
+        }
+
+        // 验证密码和确认密码是否一致
+        if (password !== confirmPassword) {
+            alert("密码和确认密码不一致，请重新输入。");
+            return;
+        }
+
+        try {
+            // 使用 Fetch 发送 POST 请求到后端的注册接口
+            const response = await fetch("http://127.0.0.1:7077/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ name, email, password, password2: confirmPassword })
+            });
+
+            // 获取后端返回的数据并进行处理
+            const data = await response.json();
+            if (response.ok) {
+                alert("注册成功！");
+                // 注册成功后自动切换到登录页面
+                changeForm();
+            } else {
+                alert(data.error ? data.error : "注册失败，请稍后再试。");
+            }
+        } catch (error) {
+            alert("注册请求失败，请检查网络连接。");
+        }
+    });
+
+
+
+    // // 登录表单提交事件的处理
+    // document.querySelector("#a-form").addEventListener("submit", async function (e) {
+    //     e.preventDefault();
+    //     const email = document.querySelector("#login-email").value;
+    //     const password = document.querySelector("#login-password").value;
+
+        // // 检查是否是管理员账户
+        // if (email === "admin" && password === "adminPSW") {
+        //             alert("欢迎管理员！");
+        //             // 直接跳转到管理员页面
+        //             window.location.href = "admin.html";
+        //         }
+                
+    //     try {
+    //         // 使用 Fetch 发送 POST 请求到后端的登录接口
+    //         const response = await fetch("http://127.0.0.1:7077/login", {
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-Type": "application/json"
+    //             },
+    //             body: JSON.stringify({ email, password })
+    //         });
+
+    //         // 获取后端返回的数据并进行处理
+    //         const data = await response.json();
+    //         if (response.ok) {
+    //             alert("登录成功！");
+    //             localStorage.setItem("jwt_token", data.token);
+
+                // //后端返回token
+                // const token = data.token;
+
+                // // 将 token 存储在 sessionStorage 中
+                // sessionStorage.setItem("authToken", token);
+    //             // 登录成功后跳转到主页
+    //             window.location.href = "homepage.html";
+    //         } else {
+    //             alert(data.error ? data.error : "登录失败，请检查邮箱和密码。");
+    //         }
+    //     } catch (error) {
+    //         alert("登录请求失败，请检查网络连接。");
+    //     }
+    // });
+    // 登录表单提交事件的处理
+    document.querySelector("#a-form").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const email = document.querySelector("#login-email").value;
+        const password = document.querySelector("#login-password").value;
+        // 检查是否是管理员账户
+        if (email === "admin" && password === "adminPSW") {
+                    alert("欢迎管理员！");
+                    // 直接跳转到管理员页面
+                    window.location.href = "admin.html";
+                }
+
+        try {
+            // 使用 Fetch 发送 POST 请求到后端的登录接口
+            const response = await fetch("http://127.0.0.1:7077/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            // 获取后端返回的数据并进行处理
+            const data = await response.json();
+            
+            if (data.code === 200) {
+                // 将 token 存储在 localStorage 中
+                localStorage.setItem("jwt_token", data.token);
+                //后端返回token
+                const token = data.token;
+                // 将 token 存储在 sessionStorage 中
+                sessionStorage.setItem("authToken", token);
+
+                alert("登录成功！");
+
+                // 登录成功后跳转到文件管理页面
+                window.location.href = "homepage.html";
+            } else {
+                alert("登录失败，请检查邮箱和密码。");
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            alert("登录请求失败，请检查网络连接。");
+        }
+    });
+    
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,15 @@
+.content {
+    position: absolute;
+    left: 84px; /* Default space for the sidebar */
+    width: calc(100% - 84px);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('2.png') no-repeat center center;
+    background-size: cover;
+    color: white;
+    /* font: 900 calc(2.5vw + 1rem) ''; */
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+     transition: left 0.5s, width 0.5s;/* Smooth transition for content */
+}

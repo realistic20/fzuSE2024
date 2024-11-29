@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户个人主页</title>
+    <link rel="stylesheet" href="leader.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            list-style: none;
+            text-decoration: none;
+        }
+
+        /* 页面整体样式 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+        }
+
+        .content {
+            position: absolute;
+            left: 84px;
+            justify-content: center;
+            background: url('background1.png') no-repeat center center;
+            background-size: cover;
+            width: calc(100% - 84px);
+            transition: left 0.5s, width 0.5s;
+            height: 100vh;
+
+        }
+
+        .profile-page {
+            text-align: center;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        /* 背景图片样式 */
+        .background-image {
+            position: relative;
+            top: 0%;
+            width: 100%;
+            height: 40vh;
+            background: url('2.png') no-repeat center center;
+            background-size: cover;
+        }
+
+        .change-background-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        /* 用户信息区域在背景图片内的左下角 */
+        .user-info {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            z-index: 20;
+        }
+
+        .avatar {
+            position: relative;
+        }
+
+        .avatar img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            border: 4px solid white;
+            cursor: pointer;
+        }
+
+        .username {
+            margin-left: 15px;
+            font-size: 30px;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        /* 自我介绍样式 */
+        .bio {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fff;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            cursor: pointer;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .bio p {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 侧边栏容器 -->
+    <div class="shell">
+        <!-- 导航列表 -->
+        <ul class="nav">
+            <!-- 激活的导航项 -->
+            <li class="active" id="logo">
+                <a href="homepage.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                    </div>
+                    <div class="text">ME</div>
+                </a>
+            </li>
+            <!-- 导航列表项 -->
+            <li>
+                <a href="main.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                    </div>
+                    <div class="text">WELCOME</div>
+                </a>
+            </li>
+            <!-- 其他导航项 -->
+            <li>
+                <a href="applicable.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt=""> <!-- 显示头像图片 -->
+                        </div>
+
+                    </div>
+                    <div class="text">适用场景</div> <!-- 链接的文本部分 -->
+                </a>
+            </li>
+            <li>
+                <a href="introduction.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt=""> <!-- 显示头像图片 -->
+                        </div>
+
+                    </div>
+                    <div class="text">产品介绍</div> <!-- 链接的文本部分 -->
+                </a>
+            </li>
+            <li>
+                <a href="file.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt=""> <!-- 显示头像图片 -->
+                        </div>
+
+                    </div>
+                    <div class="text">我的文件</div> <!-- 链接的文本部分 -->
+                </a>
+            </li>
+            <li>
+                <a href="algorithm.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+
+                    </div>
+                    <div class="text">数据分析</div>
+                </a>
+            </li>
+            <li>
+                <a href="query.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                        <i class="iconfont icon-cangku"></i>
+                    </div>
+                    <div class="text">数据查询</div>
+                </a>
+            </li>
+            <li>
+                <a href="ai.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                        <i class="iconfont icon-cangku"></i> 
+                    </div>
+                    <div class="text">AI</div>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="content">
+        <div class="profile-page">
+            <!-- 背景图片 -->
+            <div class="background-image" id="backgroundImage">
+                <button class="change-background-btn" onclick="changeBackground()">更换背景图片</button>
+                <input type="file" id="backgroundInput" style="display: none;" accept="image/*"
+                    onchange="previewBackground(event)">
+
+                <!-- 用户信息区域在背景图片左下角 -->
+                <div class="user-info">
+                    <div class="avatar" onclick="changeAvatar()">
+                        <img id="avatarImage" src="1.jpg" alt="用户头像"
+                            style="object-fit: cover; object-position: center; width: 100px; height: 100px;">
+                        <input type="file" id="avatarInput" style="display: none;" accept="image/*"
+                            onchange="previewAvatar(event)">
+                    </div>
+                    <div class="username" onclick="editUsername()">
+                        <span id="username">用户名</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 自我介绍 -->
+            <div class="bio" onclick="editBio()">
+                <p id="bioText">此人很懒，没有自我介绍。</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        // 获取所有的导航列表项
+        let nav = document.querySelectorAll(".nav li");
+
+        // 定义一个函数，用于激活点击的导航项
+        function activeLink() {
+            // 移除所有导航项的激活状态
+            nav.forEach((item) => item.classList.remove("active"));
+            // 给当前点击的导航项添加激活状态
+            this.classList.add("active");
+        }
+
+        // 给每个导航项添加点击事件监听器，点击时执行 activeLink 函数
+        nav.forEach((item) => item.addEventListener("click", activeLink));
+
+        // 更换背景图片
+        function changeBackground() {
+            document.getElementById('backgroundInput').click();
+        }
+
+        function previewBackground(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('backgroundImage').style.backgroundImage = `url(${e.target.result})`;
+                    document.getElementById('backgroundImage').style.backgroundSize = 'cover';
+                    document.getElementById('backgroundImage').style.backgroundPosition = 'center';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // 更换头像
+        function changeAvatar() {
+            document.getElementById('avatarInput').click();
+        }
+
+        function previewAvatar(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('avatarImage').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // 编辑用户名
+        function editUsername() {
+            const usernameSpan = document.getElementById('username');
+            const newUsername = prompt('请输入新的用户名', usernameSpan.textContent);
+            if (newUsername) {
+                usernameSpan.textContent = newUsername;
+            }
+        }
+
+        // 编辑自我介绍
+        function editBio() {
+            const bioText = document.getElementById('bioText');
+            const newBio = prompt('请输入新的自我介绍', bioText.textContent);
+            if (newBio) {
+                bioText.textContent = newBio;
+            }
+        }
+    </script>
+</body>
+
+</html>

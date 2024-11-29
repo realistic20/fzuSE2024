@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DATA</title>
+    <link rel="stylesheet" href="leader.css">
+    <link rel="stylesheet" href="backgroud.css">
+    <style>
+        /* 重置一些默认的样式，确保各浏览器表现一致 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            list-style: none;
+            text-decoration: none;
+        }
+
+        /* 设置 body 的背景颜色 */
+        body {
+            background: #e4e9f5;
+        }
+
+        .content {
+            flex-direction: column;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 50px;
+        }
+
+        .card-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease-in-out, opacity 1.5s ease-in-out;
+            opacity: 0; /* 初始状态不可见 */
+        }
+
+        .card img {
+            width: 300px;
+            height: 350px;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease-in-out; /* 添加过渡效果以实现放大效果 */
+        }
+
+        .card:hover img {
+            transform: scale(1.05); /* 鼠标悬停时图片放大 5% */
+        }
+
+        .card-title {
+            font-size: 1.2em;
+            margin: 15px 0;
+            color: #333;
+        }
+
+        .card-description {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .hero-content {
+            text-align: center;
+            color: #ffffff;
+            opacity: 0; /* 初始隐藏 */
+            transition: opacity 1s ease-in; /* 设置过渡效果 */
+        }
+
+        .hero-content h1 {
+            font-size: 3em;
+        }
+
+        .hero-content p {
+            font-size: 1.5em;
+        }
+
+    </style>
+</head>
+
+<body>
+    <!-- 侧边栏容器 -->
+    <div class="shell">
+        <!-- 导航列表 -->
+        <ul class="nav">
+            <!-- 激活的导航项 -->
+            <li class="active" id="logo">
+                <a href="applicable.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt=""> <!-- 显示头像图片 -->
+                        </div>
+                        <!-- <i class="iconfont icon-cangku"></i> 图标字体 -->
+                    </div>
+                    <div class="text">适用场景</div> <!-- 链接的文本部分 -->
+                </a>
+            </li>
+            <!-- 导航列表项 -->
+            <li>
+                <a href="main.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                        <i class="iconfont icon-cangku"></i> <!-- 图标字体 -->
+                    </div>
+                    <div class="text">WELCOME</div>
+                </a>
+            </li>
+            <!-- 其他导航项 -->
+            <li>
+                <a href="introduction.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt=""> <!-- 显示头像图片 -->
+                        </div>
+                        <i class="iconfont icon-cangku"></i> <!-- 图标字体 -->
+                    </div>
+                    <div class="text">产品介绍</div> <!-- 链接的文本部分 -->
+                </a>
+            </li>
+            <li>
+                <a href="file.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt=""> <!-- 显示头像图片 -->
+                        </div>
+                        <i class="iconfont icon-cangku"></i> <!-- 图标字体 -->
+                    </div>
+                    <div class="text">我的文件</div> <!-- 链接的文本部分 -->
+                </a>
+            </li>
+            <li>
+                <a href="algorithm.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                        <i class="iconfont icon-cangku"></i> <!-- 图标字体 -->
+                    </div>
+                    <div class="text">数据分析</div>
+                </a>
+            </li>
+            <li>
+                <a href="query.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                        <i class="iconfont icon-cangku"></i> 
+                    </div>
+                    <div class="text">数据查询</div>
+                </a>
+            </li>
+            <li>
+                <a href="ai.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                        <i class="iconfont icon-cangku"></i> 
+                    </div>
+                    <div class="text">AI</div>
+                </a>
+            </li>
+            <li>
+                <a href="#" id="conditionalLink"> 
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                        <i class="iconfont icon-cangku"></i> 
+                    </div>
+                    <div class="text">ME</div>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 主体内容部分 -->
+    <section class="content">
+        <div class="container">
+            <div class="hero-content">
+                <h1>适用场景</h1>
+                <p>DATA是一款至力于替代SPSS、SAS传统客户端操作的全新在线数据分析平台。</p>
+            </div>
+            <div class="card-container">
+                <div class="card">
+                    <img src="applicable1.png" alt="">
+                </div>
+                <div class="card">
+                    <img src="applicable2.png" alt="">
+                </div>
+                <div class="card">
+                    <img src="applicable3.png" alt="">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const link = document.getElementById("conditionalLink");
+        // 添加点击事件监听器
+        link.addEventListener("click", function(event) {
+            event.preventDefault(); // 阻止默认跳转行为
+
+            // 检查 sessionStorage 中是否存在登录 token
+            const token = sessionStorage.getItem("authToken");
+
+            if (token) {
+                // 如果存在 token，则跳转到主页
+                window.location.href = "homepage.html";
+            } else {
+                // 如果不存在 token，则跳转到登录页面
+                window.location.href = "me.html";
+            }
+        });
+        // 获取所有的导航列表项
+        let nav = document.querySelectorAll(".nav li");
+
+        // 定义一个函数，用于激活点击的导航项
+        function activeLink() {
+            // 移除所有导航项的激活状态
+            nav.forEach((item) => item.classList.remove("active"));
+            // 给当前点击的导航项添加激活状态
+            this.classList.add("active");
+        }
+
+        // 给每个导航项添加点击事件监听器，点击时执行 activeLink 函数
+        nav.forEach((item) => item.addEventListener("click", activeLink));
+
+        // 主体内容浮现
+        window.addEventListener("load", () => {
+            // 主体文本部分浮现
+            document.querySelector(".hero-content").style.opacity = "1";
+
+            // 逐一显示图片
+            const cards = document.querySelectorAll(".card");
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = "1";
+                }, index * 500); // 延迟显示每张图片，间隔500毫秒
+            });
+        });
+    </script>
+    
+</body>
+
+</html>

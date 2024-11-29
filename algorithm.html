@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DATA</title>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"> -->
+    <link rel="stylesheet" href="leader.css">
+    <link rel="stylesheet" href="backgroud.css">
+    <style>
+        /* 重置一些默认的样式，确保各浏览器表现一致 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            list-style: none;
+            text-decoration: none;
+        }
+
+        /* 更新 .content 类来实现内容居中 */
+        .content {
+            display: flex;
+            justify-content: center; /* 水平居中 */
+            align-items: flex-start; /* 垂直方向靠上 */
+            height: 100vh; /* 占满整个视口高度 */
+            background: url('background2.png') no-repeat center center;
+            background-size: cover;
+            text-shadow: none; /* 移除文字阴影 */
+            color: #030303;
+            padding: 0; /* 去除额外的边距以防止内容偏移 */
+            box-sizing: border-box;
+            
+        }
+
+        /* 调整容器样式 */
+        .container {
+            text-align: center;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 100%; /* 根据需要调整最大宽度 */
+        }
+        h1 {
+            font-size: 32px; /* 根据需要调整字体大小 */
+            margin-bottom: 20px; /* 设置标题与下方内容之间的距离 */
+        }
+
+        /* 空状态样式 */
+        .empty-state {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 40px; /* 根据需要调整内边距 */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 按钮居中 */
+        .empty-state .btn {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .empty-state .btn:hover {
+            background-color: #0056b3;
+        }
+
+
+        /* 设置 body 的背景颜色 */
+        body {
+            background: #e4e9f5;
+        }
+
+        a{
+            text-decoration: none;
+            color: #fdfdfd;
+        }
+        .container {
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        .empty-state {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 50px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .empty-state p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        /* 标题与内容的分割线样式 */
+        .modal-header {
+            border-bottom: 2px solid #eae1e1;  /* 分割线的颜色与上部分一致 */
+            padding-bottom: 10px; /* 增加标题部分的底部填充 */
+            margin-bottom: 35px;  /* 分割线和下方内容间距 */
+        }
+
+        /* 修改弹窗内容背景颜色以提高对比度 */
+        .modal-content {
+            background-color: #ffffff; /* 弹窗整体背景颜色，略浅于边框部分 */
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 40%;
+            max-width: 600px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: left;
+        }
+
+
+        .modal-content h2 {
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        /* 文件输入容器的样式调整，确保按钮和文件名在垂直方向上排列整齐 */
+        .file-input-container {
+            display: flex;
+            flex-direction: column; /* 使按钮和文件名在垂直方向上排列 */
+            align-items: flex-start; /* 左对齐 */
+            margin-bottom: 20px;
+            gap: 10px; /* 增加按钮与文件名之间的间距 */
+        }
+
+        .file-label {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        /* 修改文件名显示区域样式，每个文件名单独成行并支持自动换行 */
+        #fileName {
+            margin-left: 10px;
+            font-size: 14px;
+            color: #777;
+            max-width: 100%;  /* 限制文件名显示区域的最大宽度 */
+            word-break: break-all;  /* 文件名自动换行 */
+        }
+
+        /* 独立文件名样式，确保每个文件名有合适的间距 */
+        .file-name-item {
+            margin-top: 5px;  /* 每个文件名之间的间距 */
+            line-height: 1.6;  /* 设置行高，确保每行之间的间距适中 */
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between; /* 左右分布 */
+            align-items: center;
+            padding-top: 10px; /* 调整按钮容器的顶部内边距以分隔内容 */
+        }
+
+        /* 关闭按钮样式 */
+        .close {
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #000; /* 黑色关闭按钮 */
+        }
+
+        .close:hover,
+        .close:focus {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 侧边栏容器 -->
+    <div class="shell">
+        <!-- 导航列表 -->
+        <ul class="nav">
+            <!-- 激活的导航项 -->
+            <li class="active" id="logo">
+                <a href="algorithm.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                    </div>
+                    <div class="text">数据分析</div>
+                </a>
+            </li>
+            <!-- 导航列表项 -->
+            <li>
+                <a href="main.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                        <i class="iconfont icon-cangku"></i> <!-- 图标字体 -->
+                    </div>
+                    <div class="text">WELCOME</div>
+                </a>
+            </li>
+            <!-- 其他导航项 -->
+            <li>
+                <a href="applicable.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt=""> <!-- 显示头像图片 -->
+                        </div>
+                        <i class="iconfont icon-cangku"></i> <!-- 图标字体 -->
+                    </div>
+                    <div class="text">适用场景</div> <!-- 链接的文本部分 -->
+                </a>
+            </li>
+            <li>
+                <a href="introduction.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt=""> <!-- 显示头像图片 -->
+                        </div>
+                        <i class="iconfont icon-cangku"></i> <!-- 图标字体 -->
+                    </div>
+                    <div class="text">产品介绍</div> <!-- 链接的文本部分 -->
+                </a>
+            </li>
+            <li>
+                <a href="file.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt=""> <!-- 显示头像图片 -->
+                        </div>
+                        <i class="iconfont icon-cangku"></i> <!-- 图标字体 -->
+                    </div>
+                    <div class="text">我的文件</div> <!-- 链接的文本部分 -->
+                </a>
+            </li>
+            <li>
+                <a href="query.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                        <i class="iconfont icon-cangku"></i> 
+                    </div>
+                    <div class="text">数据查询</div>
+                </a>
+            </li>
+            <li>
+                <a href="ai.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                        <i class="iconfont icon-cangku"></i> 
+                    </div>
+                    <div class="text">AI</div>
+                </a>
+            </li>
+            <li>
+                <a href="#" id="conditionalLink"> 
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                        <i class="iconfont icon-cangku"></i> 
+                    </div>
+                    <div class="text">ME</div>
+                </a>
+            </li>
+        </ul>
+    </div>
+<!-- 主体内容部分 -->
+<section class="content">
+    <div class="container">
+        <h1>分析项目</h1>
+        <div class="empty-state">
+
+            <button id="newAnalysisBtn" class="btn">新建分析项目</button>
+        </div>
+    </div>
+    <div id="fileModal" class="modal">
+        <div class="modal-content">
+            <!-- 分割标题和内容的部分 -->
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>选择文件</h2>
+            </div>
+            <!-- 文件输入和按钮部分 -->
+            <form id="uploadForm" enctype="multipart/form-data">
+                <div class="file-input-container">
+                    <!-- <label for="fileInput" class="file-label">选择文件</label> -->
+                    <input type="file" id="fileInput" accept=".xls,.xlsx,.csv" multiple required>
+                    <span id="fileName">未选择文件</span>
+                </div>
+                <div class="button-container">
+                    <label for="fileInput" class="file-label">选择文件</label>
+                    <button type="button" id="analyzeBtn" class="btn">开始分析</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+<!-- <script>
+        const link = document.getElementById("conditionalLink");
+        // 添加点击事件监听器
+        link.addEventListener("click", function(event) {
+            event.preventDefault(); // 阻止默认跳转行为
+
+            // 检查 sessionStorage 中是否存在登录 token
+            const token = sessionStorage.getItem("authToken");
+
+            if (token) {
+                // 如果存在 token，则跳转到主页
+                window.location.href = "homepage.html";
+            } else {
+                // 如果不存在 token，则跳转到登录页面
+                window.location.href = "me.html";
+            }
+        });
+        // 当页面加载时，检查登录状态
+        document.addEventListener("DOMContentLoaded", function () {
+            checkLoginStatus();
+        });
+        // 检查用户是否已登录的函数
+        function checkLoginStatus() {
+            const token = sessionStorage.getItem("authToken");
+            if (!token) {
+                // 如果没有 token，则跳转回登录页面
+                window.location.href = "me.html"; 
+            }
+        }
+
+    
+        let nav = document.querySelectorAll(".nav li");
+
+        // 定义一个函数，用于激活点击的导航项
+        function activeLink() {
+            // 移除所有导航项的激活状态
+            nav.forEach((item) => item.classList.remove("active"));
+            // 给当前点击的导航项添加激活状态
+            this.classList.add("active");
+        }
+
+        // 给每个导航项添加点击事件监听器，点击时执行 activeLink 函数
+        nav.forEach((item) => item.addEventListener("click", activeLink));
+
+        document.getElementById('newAnalysisBtn').addEventListener('click', function() {
+            document.getElementById('fileModal').style.display = 'block';
+        });
+
+        document.querySelector('.close').addEventListener('click', function() {
+            document.getElementById('fileModal').style.display = 'none';
+        });
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('fileModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        };
+
+        document.getElementById('fileInput').addEventListener('change', function() {
+            const fileName = document.getElementById('fileInput').files[0].name;
+            document.getElementById('fileName').textContent = fileName;
+        });
+
+        document.getElementById('analyzeBtn').addEventListener('click', function() {
+            const fileInput = document.getElementById('fileInput');
+            if (!fileInput.files.length) {
+                alert('请选择文件');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(event) {
+                const data = new Uint8Array(event.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const sheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[sheetName];
+                const json = XLSX.utils.sheet_to_json(worksheet);
+
+                // 将 JSON 数据存储到 localStorage 中
+                localStorage.setItem('analysisData', JSON.stringify(json));
+
+                // 关闭模态框并跳转到分析结果页面
+                document.getElementById('fileModal').style.display = 'none';
+                window.location.href = 'analysis-results.html';
+            };
+
+            reader.readAsArrayBuffer(file);
+        });
+</script> -->
+<script>
+        const link = document.getElementById("conditionalLink");
+        // 添加点击事件监听器
+        link.addEventListener("click", function(event) {
+            event.preventDefault(); // 阻止默认跳转行为
+
+            // 检查 sessionStorage 中是否存在登录 token
+            const token = sessionStorage.getItem("authToken");
+
+            if (token) {
+                // 如果存在 token，则跳转到主页
+                window.location.href = "homepage.html";
+            } else {
+                // 如果不存在 token，则跳转到登录页面
+                window.location.href = "me.html";
+            }
+        });
+        // 当页面加载时，检查登录状态
+        document.addEventListener("DOMContentLoaded", function () {
+            checkLoginStatus();
+        });
+        // 检查用户是否已登录的函数
+        function checkLoginStatus() {
+            const token = sessionStorage.getItem("authToken");
+            if (!token) {
+                // 如果没有 token，则跳转回登录页面
+                window.location.href = "me.html"; 
+            }
+        }
+
+    
+        let nav = document.querySelectorAll(".nav li");
+
+        // 定义一个函数，用于激活点击的导航项
+        function activeLink() {
+            // 移除所有导航项的激活状态
+            nav.forEach((item) => item.classList.remove("active"));
+            // 给当前点击的导航项添加激活状态
+            this.classList.add("active");
+        }
+
+        // 给每个导航项添加点击事件监听器，点击时执行 activeLink 函数
+        nav.forEach((item) => item.addEventListener("click", activeLink));
+    
+    document.addEventListener('DOMContentLoaded', function () {
+        const fileInput = document.getElementById('fileInput');
+        const fileNameDisplay = document.getElementById('fileName');
+
+        // // 监听文件输入框的变化
+        // fileInput.addEventListener('change', function () {
+        //     if (fileInput.files.length > 0) {
+        //         const fileNames = Array.from(fileInput.files).map(file => file.name).join(', ');
+        //         fileNameDisplay.textContent = `已选择文件: ${fileNames}`;
+        //     } else {
+        //         fileNameDisplay.textContent = '未选择文件';
+        //     }
+        // });
+
+        // 监听文件输入框的变化
+        fileInput.addEventListener('change', function () {
+            fileNameDisplay.innerHTML = ''; // 清空之前的文件名显示
+            if (fileInput.files.length > 0) {
+                Array.from(fileInput.files).forEach(file => {
+                    const fileNameDiv = document.createElement('div');
+                    fileNameDiv.classList.add('file-name-item');
+                    fileNameDiv.textContent = file.name;
+                    fileNameDisplay.appendChild(fileNameDiv);
+                });
+            } else {
+                fileNameDisplay.textContent = '未选择文件';
+            }
+        });
+
+        // 点击新建分析项目按钮，显示模态框
+        const newAnalysisBtn = document.getElementById('newAnalysisBtn');
+        const fileModal = document.getElementById('fileModal');
+        const closeBtn = document.querySelector('.close');
+
+        newAnalysisBtn.addEventListener('click', function () {
+            fileModal.style.display = 'block';
+        });
+
+        // 关闭模态框
+        closeBtn.addEventListener('click', function () {
+            fileModal.style.display = 'none';
+        });
+
+        // 点击模态框外部关闭模态框
+        window.addEventListener('click', function (event) {
+            if (event.target === fileModal) {
+                fileModal.style.display = 'none';
+            }
+        });
+    });
+
+
+    // 绑定文件分析按钮
+    document.getElementById('analyzeBtn').addEventListener('click', async function () {
+        const fileInput = document.getElementById('fileInput');
+        if (!fileInput.files.length) {
+            alert('请选择文件');
+            return;
+        }
+
+        const files = Array.from(fileInput.files);
+        const analysisData = [];
+
+        console.log('用户选择的文件:', files.map(file => file.name));
+
+        try {
+            await Promise.all(
+                files.map(file => processFile(file, analysisData))
+            );
+
+            localStorage.setItem('analysisData', JSON.stringify(analysisData));
+            console.log('所有文件已成功处理并存储:', analysisData);
+            alert('所有文件已成功处理！');
+
+            fileModal.style.display = 'none';
+            window.location.href = 'analysis-results.html';
+        } catch (error) {
+            console.error('文件处理失败:', error);
+            alert('文件处理过程中出现错误，请检查文件格式');
+        }
+    });
+
+    function processFile(file, analysisData) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                try {
+                    const data = new Uint8Array(event.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const sheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[sheetName];
+                    const json = XLSX.utils.sheet_to_json(worksheet);
+
+                    analysisData.push({
+                        fileName: file.name,
+                        data: json
+                    });
+                    console.log(`文件 ${file.name} 处理完成`);
+                    resolve();
+                } catch (err) {
+                    console.error(`文件 ${file.name} 解析失败:`, err);
+                    reject(err);
+                }
+            };
+
+            reader.onerror = function (error) {
+                console.error(`文件读取失败: ${file.name}`, error);
+                reject(error);
+            };
+
+            reader.readAsArrayBuffer(file);
+        });
+    }
+</script>
+</body>
+
+</html>

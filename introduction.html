@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DATA</title>
+    <link rel="stylesheet" href="leader.css">
+    <link rel="stylesheet" href="backgroud.css">
+    <style>
+        /* 重置一些默认的样式，确保各浏览器表现一致 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            list-style: none;
+            text-decoration: none;
+        }
+
+        /* 设置 body 的背景颜色 */
+        body {
+            font-family: Arial, sans-serif;
+            background: #e4e9f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .section {
+            margin: 40px 0;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .section-content1 {
+            color: #fefeff;
+            text-align: center;
+            flex: 1;
+            padding: 20px;
+            opacity: 0; /* 初始隐藏 */
+            transition: opacity 1s ease-in; /* 设置过渡效果 */
+        }
+
+        .section-content1 h2 {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .image {
+            flex: 1;
+            padding: 20px;
+            transition: transform 0.3s ease-in-out, opacity 1.5s ease-in-out;
+            opacity: 0; /* 初始状态不可见 */
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .content {
+            position: relative;
+            width: 100%;
+            height: auto;
+            min-height: 100vh;
+            padding-top: 100px;
+            padding-bottom: 100px;
+            background-color: #fafbfc;
+            background: url('2.png') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+            transition: left 0.5s, width 0.5s;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 侧边栏容器 -->
+    <div class="shell">
+        <!-- 导航列表 -->
+        <ul class="nav">
+            <!-- 激活的导航项 -->
+            <li class="active" id="logo">
+                <a href="introduction.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                    </div>
+                    <div class="text">产品介绍</div>
+                </a>
+            </li>
+            <li>
+                <a href="main.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                        <i class="iconfont icon-cangku"></i> <!-- 图标字体 -->
+                    </div>
+                    <div class="text">WELCOME</div>
+                </a>
+            </li>
+            <li>
+                <a href="applicable.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                        <i class="iconfont icon-cangku"></i>
+                    </div>
+                    <div class="text">适用场景</div>
+                </a>
+            </li>
+            <li>
+                <a href="file.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt=""> <!-- 显示头像图片 -->
+                        </div>
+                        <i class="iconfont icon-cangku"></i> <!-- 图标字体 -->
+                    </div>
+                    <div class="text">我的文件</div> <!-- 链接的文本部分 -->
+                </a>
+            </li>
+            <li>
+                <a href="algorithm.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                        <i class="iconfont icon-cangku"></i> <!-- 图标字体 -->
+                    </div>
+                    <div class="text">数据分析</div>
+                </a>
+            </li>
+            <li>
+                <a href="query.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                        <i class="iconfont icon-cangku"></i> 
+                    </div>
+                    <div class="text">数据查询</div>
+                </a>
+            </li>
+            <li>
+                <a href="ai.html">
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                        <i class="iconfont icon-cangku"></i> 
+                    </div>
+                    <div class="text">AI</div>
+                </a>
+            </li>
+            <li>
+                <a href="#" id="conditionalLink"> 
+                    <div class="icon">
+                        <div class="imageBox">
+                            <img src="logo.webp" alt="">
+                        </div>
+                        <i class="iconfont icon-cangku"></i> 
+                    </div>
+                    <div class="text">ME</div>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="content">
+        <!-- 主体内容部分 -->
+        <div class="container">
+            <!-- Product Introduction Section -->
+            <div class="section">
+                <div class="section-content1">
+                    <h2>产品介绍</h2>
+                    <p>强大的数据分析与处理工具，助您轻松驱驶复杂数据，测览深层次信息。</p>
+                </div>
+            </div>
+
+            <!-- Powerful Data Processing Section -->
+            <div class="section">
+                <div class="image">
+                    <img src="introduction1.jpg" alt="">
+                </div>
+            </div>
+
+            <!-- Diverse Algorithm Analysis Section -->
+            <div class="section">
+                <div class="image">
+                    <img src="introduction2.jpg" alt="">
+                </div>
+            </div>
+
+            <!-- Visual Analysis Report Section -->
+            <div class="section">
+                <div class="image">
+                    <img src="introduction3.jpg" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const link = document.getElementById("conditionalLink");
+        // 添加点击事件监听器
+        link.addEventListener("click", function(event) {
+            event.preventDefault(); // 阻止默认跳转行为
+
+            // 检查 sessionStorage 中是否存在登录 token
+            const token = sessionStorage.getItem("authToken");
+
+            if (token) {
+                // 如果存在 token，则跳转到主页
+                window.location.href = "homepage.html";
+            } else {
+                // 如果不存在 token，则跳转到登录页面
+                window.location.href = "me.html";
+            }
+        });
+        // 获取所有的导航列表项
+        let nav = document.querySelectorAll(".nav li");
+
+        // 定义一个函数，用于激活点击的导航项
+        function activeLink() {
+            // 移除所有导航项的激活状态
+            nav.forEach((item) => item.classList.remove("active"));
+            // 给当前点击的导航项添加激活状态
+            this.classList.add("active");
+        }
+
+        // 给每个导航项添加点击事件监听器，点击时执行 activeLink 函数
+        nav.forEach((item) => item.addEventListener("click", activeLink));
+
+        // 使用 Intersection Observer API 来监听图片的出现
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = "1";
+                    observer.unobserve(entry.target); // 当目标元素出现时，停止监听
+                }
+            });
+        }, {
+            threshold: 0.2 // 设置视图出现间间的门段，10%出现时执行
+        });
+
+        // 获取所有需要监听的图片
+        const images = document.querySelectorAll(".image");
+        images.forEach(image => {
+            observer.observe(image); // 对所有图片进行监听
+        });
+
+        // 主体内容浮现
+        window.addEventListener("load", () => {
+            // 主体文本部分浮现
+            document.querySelector(".section-content1").style.opacity = "1";
+        });
+    </script>
+</body>
+
+</html>
+
