@@ -802,8 +802,7 @@
                     // 直接跳转到管理员页面
                     window.location.href = "admin.html";
                 }
-
-        try {
+        else{try {
             // 使用 Fetch 发送 POST 请求到后端的登录接口
             const response = await fetch("http://127.0.0.1:7077/login", {
                 method: "POST",
@@ -835,7 +834,8 @@
             console.error('Login error:', error);
             alert("登录请求失败，请检查网络连接。");
         }
-    });
+    }});
+
     
 
 </script>

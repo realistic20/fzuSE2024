@@ -95,6 +95,7 @@ function standardizeData() {
     // 获取选中的列的索引或名称
     const columnIndex = selectedColumns[0];  // 假设只选择了一个列
     const fileData = analysisData[0].data;
+    console.log('Success:', analysisData[0].data);
     // 提取要标准化的列数据（假设 analysisData 是二维数组）
     const dataToSend = {
         data: fileData.map(row => row[columnIndex]) // 提取该列的数据
@@ -119,9 +120,15 @@ function standardizeData() {
                     newRow[columnIndex] = standardizedData[index]; // 替换为标准化后的数据
                     return newRow;
                 });
+                console.log('Success:', newAnalysisData);
                 // 生成新的 JSON 数据
                 newAnalysisDataJSON = JSON.stringify(newAnalysisData);
+                analysisData[0].data = newAnalysisData;
+                renderAllTables(analysisData);
+                localStorage.setItem('analysisData', JSON.stringify(analysisData));
+
                 showPopup(newAnalysisDataJSON); // 显示标准化后的结果
+                
             } else {
                 alert('标准化失败: ' + (data.message || '未知错误'));
             }
@@ -166,7 +173,10 @@ function handleOutliers() {
                 });
                 // 生成新的 JSON 数据
                 newAnalysisDataJSON = JSON.stringify(newAnalysisData);
+                analysisData[0].data = newAnalysisData;
+                renderAllTables(analysisData);
                 showOutliersPopup(newAnalysisDataJSON);
+                localStorage.setItem('analysisData', JSON.stringify(analysisData));
             } else {
                 alert("处理异常值失败: " + data.message);
             }
@@ -208,9 +218,12 @@ function missingValuesHandleData() {
                     newRow[columnIndex] = missingValuesData[index]; // 替换为标准化后的数据
                     return newRow;
                 });
+                analysisData[0].data = newAnalysisData;
+                renderAllTables(analysisData);
                 // 生成新的 JSON 数据
                 newAnalysisDataJSON = JSON.stringify(newAnalysisData);
                 showMissingValuesPopup(newAnalysisDataJSON);
+                localStorage.setItem('analysisData', JSON.stringify(analysisData));
             } else {
                 alert("处理缺失值失败: " + data.message);
             }

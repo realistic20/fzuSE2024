@@ -400,7 +400,7 @@
                         success: function (response) {
                             if (response.message === "success" && Array.isArray(response.data)) {
                                 response.data.forEach(function (region) {
-                                    $('#regionSelect').append(new Option(region.region_name, region.region_id));
+                                    $('#regionSelect').append(new Option(region.region_name, 1));//region.region_id
                                 });
                                 $('#regionSelect').prop('disabled', false);
                             } else {
@@ -522,6 +522,11 @@
             const categoryId = $('#subCategorySelect').val();
             const startYear = parseInt($('#startTime').val(), 10);
             const endYear = parseInt($('#endTime').val(), 10);
+             // 添加年份验证
+            if (startYear > endYear) {
+                alert('结束年份必须大于或等于起始年份');
+                return;
+            }
 
             if (categoryId && startYear && endYear) {
                 // 生成年份数组
